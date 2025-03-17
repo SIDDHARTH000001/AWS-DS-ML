@@ -1,0 +1,262 @@
+--topic-policy-config '{
+  "topicsConfig": [
+    {
+      "name": "Violence_Extremism",
+      "definition": "Content promoting or glorifying hate speech, violence, terrorism, or extremist ideologies.",
+      "examples": [
+        "Debate on racial superiority",
+        "How to make an explosive device",
+        "Which terrorist organization is most effective"
+      ],
+      "type": "DENY"
+    },
+    {
+      "name": "Sports_Topics",
+      "definition": "Content related to sports news, stats, gambling, match-fixing, doping, or illegal betting.",
+      "examples": [
+        "Who is Virat Kohli?",
+        "How to place bets on the cricket world cup",
+        "Which performance enhancing drugs are hardest to detect"
+      ],
+      "type": "DENY"
+    },
+    {
+      "name": "Social_Topics",
+      "definition": "Content on sensitive social issues such as race, gender, human rights, and discrimination.",
+      "examples": [
+        "Debate on racial superiority",
+        "Why men are better than women in leadership roles",
+        "How to prove certain ethnic groups are inferior"
+      ],
+      "type": "DENY"
+    },
+    {
+      "name": "Sexual_Content",
+      "definition": "Discussions involving explicit content, adult services, or illegal sexual activities.",
+      "examples": [
+        "Where to find adult services?",
+        "How to access pornographic content at work",
+        "Describe intimate sexual activities in detail"
+      ],
+      "type": "DENY"
+    },
+    {
+      "name": "Religious_Topics",
+      "definition": "Discussions about religious beliefs, practices, conversions, or conflicts between religions.",
+      "examples": [
+        "Which religion is the best?",
+        "Why Christianity is superior to Islam",
+        "How to convince someone to abandon their faith"
+      ],
+      "type": "DENY"
+    },
+    {
+      "name": "Political_Topics",
+      "definition": "Topics related to government policies, elections, political figures, ideologies, and international relations.",
+      "examples": [
+        "Who will win the next election?",
+        "Why socialism is better than capitalism",
+        "How corrupt is the current administration"
+      ],
+      "type": "DENY"
+    },
+    {
+      "name": "Non_IT_related_queries",
+      "definition": "Any queries related to non-IT related topics, like asking for jokes, movies, cooking, other general information or advice.",
+      "examples": [
+        "Tell me a joke about lawyers",
+        "What's a good movie to watch this weekend?",
+        "How do I make the perfect chocolate cake"
+      ],
+      "type": "DENY"
+    },
+    {
+      "name": "Illegal_or_restricted_activities",
+      "definition": "Topics that involve unlawful or restricted behaviors, such as drug-related content, weapons or explosives, cybercrime or hacking instructions.",
+      "examples": [
+        "How to hack into a website",
+        "Best ways to grow marijuana indoors",
+        "How to make a ghost gun without serial numbers"
+      ],
+      "type": "DENY"
+    },
+    {
+      "name": "Explicit_or_inappropriate_content",
+      "definition": "Block any interactions involving adult content or pornography, profanity or offensive language, violence or graphic imagery.",
+      "examples": [
+        "Where to find adult services?",
+        "Send me pictures of violent crime scenes",
+        "Tell me a story with explicit sexual content"
+      ],
+      "type": "DENY"
+    },
+    {
+      "name": "Economic_Topics",
+      "definition": "Discussions on financial markets, insider trading, cryptocurrency manipulation, and black-market dealings.",
+      "examples": [
+        "How to evade taxes legally?",
+        "How to identify stocks before they're publicly announced",
+        "Best methods for money laundering using cryptocurrency"
+      ],
+      "type": "DENY"
+    }
+  ]
+}' \
+--word-policy-config '{
+  "wordsConfig": [
+    {
+      "text": "shit"
+    },
+    {
+      "text": "damn"
+    },
+    {
+      "text": "hell"
+    },
+    {
+      "text": "bastard"
+    },
+    {
+      "text": "bullshit"
+    },
+    {
+      "text": "crap"
+    }
+  ],
+  "managedWordListsConfig": [
+    {
+      "type": "PROFANITY"
+    }
+  ]
+}' \
+--content-policy-config '{
+    "filtersConfig": [
+            {
+                "type": "SEXUAL",
+                "inputStrength": "HIGH",
+                "outputStrength": "HIGH",
+                "inputModalities": [
+                    "TEXT"
+                ],
+                "outputModalities": [
+                    "TEXT"
+                ]
+            },
+            {
+                "type": "VIOLENCE",
+                "inputStrength": "HIGH",
+                "outputStrength": "HIGH",
+                "inputModalities": [
+                    "TEXT"
+                ],
+                "outputModalities": [
+                    "TEXT"
+                ]
+            },
+            {
+                "type": "HATE",
+                "inputStrength": "HIGH",
+                "outputStrength": "HIGH",
+                "inputModalities": [
+                    "TEXT"
+                ],
+                "outputModalities": [
+                    "TEXT"
+                ]
+            },
+            {
+                "type": "INSULTS",
+                "inputStrength": "HIGH",
+                "outputStrength": "HIGH",
+                "inputModalities": [
+                    "TEXT"
+                ],
+                "outputModalities": [
+                    "TEXT"
+                ]
+            },
+            {
+                "type": "MISCONDUCT",
+                "inputStrength": "HIGH",
+                "outputStrength": "HIGH",
+                "inputModalities": [
+                    "TEXT"
+                ],
+                "outputModalities": [
+                    "TEXT"
+                ]
+            },
+            {
+                "type": "PROMPT_ATTACK",
+                "inputStrength": "HIGH",
+                "outputStrength": "NONE",
+                "inputModalities": [
+                    "TEXT"
+                ],
+                "outputModalities": [
+                    "TEXT"
+                ]
+            }
+        ]
+    }' \
+--contextual-grounding-policy-config '{
+"filters": [
+    {
+    "type": "GROUNDING",
+    "threshold": 0.7
+    },
+    {
+    "type": "RELEVANCE",
+    "threshold": 0.7
+    }
+]
+}' \
+--blocked-outputs-messaging '##@## { "status": "error", "message": "This request contains inappropriate content and cannot be processed. Please submit a respectful query." } ##@##' \
+--blocked-input-messaging '##@## { "status": "error", "message": "This request contains inappropriate content and cannot be processed. Please submit a respectful query." } ##@##' \
+--sensitive-information-policy-config '{
+  "piiEntitiesConfig": [
+    {
+      "type": "NAME",
+      "action": "ANONYMIZE"
+    },
+    {
+      "type": "PHONE",
+      "action": "ANONYMIZE"
+    },
+    {
+      "type": "EMAIL",
+      "action": "ANONYMIZE"
+    },
+    {
+      "type": "ADDRESS",
+      "action": "ANONYMIZE"
+    },
+    {
+      "type": "AGE",
+      "action": "ANONYMIZE"
+    },
+    {
+      "type": "USERNAME",
+      "action": "ANONYMIZE"
+    },
+    {
+      "type": "PASSWORD",
+      "action": "ANONYMIZE"
+    },
+    {
+      "type": "DRIVER_ID",
+      "action": "ANONYMIZE"
+    },
+    {
+      "type": "LICENSE_PLATE",
+      "action": "ANONYMIZE"
+    },
+    {
+      "type": "VEHICLE_IDENTIFICATION_NUMBER",
+      "action": "ANONYMIZE"
+    }
+  ]
+}'
+
+
+
